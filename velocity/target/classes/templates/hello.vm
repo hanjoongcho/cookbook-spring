@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Hello Spring Velocity</title>
+</head>
+<body>
+
+http://velocity.apache.org/engine/1.7/user-guide.html
+
+	<h3>Variables</h3>
+	#set( $foo = "Velocity" )
+	<pre>
+Hello $foo World!
+	</pre>
+	
+	<h3>Methods</h3>
+	<pre>
+$customer.getNameWithLabel() 
+	</pre>
+
+	<h3>Quiet Reference Notation</h3>
+	#set( $email = "hanjoongcho@gmail.com" )
+	<input type="text" name="email" value="$email"/>
+	<input type="text" name="email" value="$!email"/>
+
+	<h3>Foreach Loop</h3>
+#set( $criteria = ["name", "address"] )
+#foreach( $criterion in $criteria )
+	$criterion<br />
+#end
+
+</body>
+</html>
