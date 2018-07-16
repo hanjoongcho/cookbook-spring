@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.io.IOUtils;
 import org.springframework.http.HttpEntity;
@@ -23,6 +24,26 @@ public class Proxy {
     @RequestMapping(path = "/persons", method = RequestMethod.GET)
     public static String getPersons() {
         return "Hello";
+    }
+    
+    @RequestMapping("/wms")
+    public HttpEntity<byte[]>  wmsProxy(HttpServletRequest request) {
+        ByteArrayOutputStream output = null;
+        InputStream input;
+        try {
+            input = openUrlStream("https://ahocevar.com/geoserver/wms" + request.getQueryString());
+            output = new ByteArrayOutputStream();
+            IOUtils.copy(input, output);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_JPEG);
+        headers.setContentLength(output.toByteArray().length);
+
+        return new HttpEntity<byte[]>(output.toByteArray(), headers);
     }
     
     @RequestMapping("/picture/{id}")
