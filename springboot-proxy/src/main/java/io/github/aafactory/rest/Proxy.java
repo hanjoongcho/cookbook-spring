@@ -3,6 +3,7 @@ package io.github.aafactory.rest;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
@@ -29,7 +30,7 @@ public class Proxy {
     @RequestMapping("/wms")
     public HttpEntity<byte[]>  wmsProxy(HttpServletRequest request) {
         ByteArrayOutputStream output = null;
-        InputStream input;
+        InputStream input = null;
         try {
             input = openUrlStream("https://ahocevar.com/geoserver/wms" + request.getQueryString());
             output = new ByteArrayOutputStream();
@@ -37,6 +38,13 @@ public class Proxy {
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+        } finally {
+            try {
+                input.close();
+                output.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         
         HttpHeaders headers = new HttpHeaders();
